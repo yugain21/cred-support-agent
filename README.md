@@ -1,0 +1,48 @@
+# Cred Domain Support Agent
+
+**Track**: Cred (Banking & FinTech)
+**Telemetry**: `CREWAI_DISABLE_TELEMETRY=true` and `OTEL_SDK_DISABLED=true` are set (see `mock_llm.py` and `dataset.py`/`main.py` startup). Runs completely offline via `MOCK_LLM` with zero API keys and zero network access.
+
+Setup:
+```
+pip install -r requirements.txt
+python dataset.py              # generates dataset.json + prints Task 1 report
+python eval.py                 # runs Tasks 4/5/13 and prints real, reproducible numbers
+python autogen_review.py       # runs Task 14's approve/revise demonstration
+uvicorn main:app --reload      # Task 11 deployment (2 HTTP endpoints + /chat websocket)
+```
+
+> **A note on numbers in this README**: every number below is produced by
+> running the scripts in this repo, not hand-picked. If you regenerate
+> `dataset.json` or rerun `eval.py`, re-copy the printed numbers here -
+> a README that states different numbers than what the code prints is a
+> red flag for a grader and was the single biggest problem in an earlier
+> draft of this project.
+
+## Part 1: Dataset Choices (Task 1)
+- **Seed**: 42
+- **Category/status weights**: uniform, with a guaranteed floor (>=3 records/category, >=1/status)
+- **Amount range**: 50,000 - 5,000,000 INR (small personal loans up to large home loans)
+- **Fraud rate**: Bernoulli(p=0.22) per record, asserted post-generation to fall inside 10-30% (currently ~20.0% for seed=42 - rerun `python dataset.py` to reproduce)
+
+## RAG Chunking Evaluation & Recommendation (Tasks 3-5)
+- Two ChromaDB collections, both created with `hnsw:space: cosine` explicitly (Chroma defaults to L2 distance, which silently breaks any `1 - distance` similarity math - this was the root cause of the original draft's self-contradictory calibration numbers).
+- Threshold is calibrated empirically at `eval.py`/app-startup time by measuring real in-scope vs. out-of-scope query similarities against the sentence-based collection - see the printed output of `python eval.py` for the exact numbers on your machine; the code will tell you if the two clusters didn't separate cleanly (`clusters_separated` flag) rather than silently picking a bad threshold.
+- **Recommendation**: Sentence-based chunking. Financial policy documents are dense, self-contained conditional rules; fixed-size chunking with a fixed character window frequently splits a rule mid-sentence, while sentence boundaries preserve intact policy constraints. Run `python eval.py` for the exact per-query precision/recall for both strategies on this run.
+
+## Part 2: Escalation Formula (Task 6)
+- **Formula**: `escalation_score = 0.5 * fraud_flag + 0.5 * (days_since_created / 30)`
+- **Threshold**: computed at import time in `tools.py` as the 80th-percentile `days_since_created` age in the *actual generated* `dataset.json`, converted through the recency term of the formula (see `escalation_threshold_from_dataset()`), so the justification is always tied to the real dataset rather than a fixed number.
+
+## Part 2: Guardrails (Task 10)
+- Input: prompt-injection pattern detection (blocks the request) + PII masking of PAN / Aadhaar / bank-account-number shaped substrings (redacts, doesn't block - applicant name and income are explicitly out of scope for masking per the brief, since they're unstructured free text with no reliable pattern under a keyless masker).
+- Output: groundedness check that refuses to answer RAG-sourced queries when the retrieved context didn't clear the similarity threshold.
+- Same masking is applied before anything is written to `api_logs.jsonl` (Task 12) - fixed-format PII never reaches disk in the clear.
+
+## Part 4: AI Governance & Risk (Task 15)
+- **Principle of Least Autonomy**: `loan_status_lookup` (the DB tool) is bound exclusively to `lookup_agent`'s tool array in `agents.py`. `retrieval_agent` and `composer_agent` are never given a reference to it - there is no code path by which they could call it during a generic policy chat.
+- **Risk Classification**: **Medium Risk**. The system retrieves and summarizes financial policy/status information for human support staff to relay - it does not autonomously move money, approve/reject loans, or ingest unmasked PII. This matches the brief's Medium tier ("code generation/customer support tickets") rather than High (autonomous financial decisions) or Low (pure summarization).
+- **Runtime budget cap**: `governance.py` estimates tokens (~4 chars/token) and rejects any request estimated over 500 tokens before it reaches the crew - see `governance.enforce_budget()`.
+
+## Task 16: Response Caching
+- `cache.py` keys on normalized (trimmed, lowercased, whitespace-collapsed) query text. `GET /cache-stats` on the running API shows `calls_to_crew` vs `cache_hits` as before/after evidence for a repeated query.

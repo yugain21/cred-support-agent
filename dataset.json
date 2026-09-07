@@ -1,0 +1,362 @@
+[
+  {
+    "category": "Business Loan",
+    "status": "Disbursed",
+    "loan_amount_inr": 3012000,
+    "days_since_created": 18,
+    "flagged_for_fraud_review": true,
+    "record_id": "CRED-1000"
+  },
+  {
+    "category": "Personal Loan",
+    "status": "Submitted",
+    "loan_amount_inr": 254000,
+    "days_since_created": 23,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1001"
+  },
+  {
+    "category": "Business Loan",
+    "status": "Under Review",
+    "loan_amount_inr": 2221000,
+    "days_since_created": 16,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1002"
+  },
+  {
+    "category": "Home Loan",
+    "status": "Approved",
+    "loan_amount_inr": 3318000,
+    "days_since_created": 21,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1003"
+  },
+  {
+    "category": "Business Loan",
+    "status": "Rejected",
+    "loan_amount_inr": 2055000,
+    "days_since_created": 5,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1004"
+  },
+  {
+    "category": "Personal Loan",
+    "status": "Approved",
+    "loan_amount_inr": 4208000,
+    "days_since_created": 19,
+    "flagged_for_fraud_review": true,
+    "record_id": "CRED-1005"
+  },
+  {
+    "category": "Auto Loan",
+    "status": "Disbursed",
+    "loan_amount_inr": 4612000,
+    "days_since_created": 7,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1006"
+  },
+  {
+    "category": "Auto Loan",
+    "status": "Rejected",
+    "loan_amount_inr": 2837000,
+    "days_since_created": 8,
+    "flagged_for_fraud_review": true,
+    "record_id": "CRED-1007"
+  },
+  {
+    "category": "Education Loan",
+    "status": "Approved",
+    "loan_amount_inr": 2867000,
+    "days_since_created": 19,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1008"
+  },
+  {
+    "category": "Education Loan",
+    "status": "Submitted",
+    "loan_amount_inr": 3813000,
+    "days_since_created": 17,
+    "flagged_for_fraud_review": true,
+    "record_id": "CRED-1009"
+  },
+  {
+    "category": "Auto Loan",
+    "status": "Under Review",
+    "loan_amount_inr": 1382000,
+    "days_since_created": 11,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1010"
+  },
+  {
+    "category": "Education Loan",
+    "status": "Disbursed",
+    "loan_amount_inr": 2109000,
+    "days_since_created": 17,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1011"
+  },
+  {
+    "category": "Home Loan",
+    "status": "Disbursed",
+    "loan_amount_inr": 3486000,
+    "days_since_created": 7,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1012"
+  },
+  {
+    "category": "Education Loan",
+    "status": "Under Review",
+    "loan_amount_inr": 2219000,
+    "days_since_created": 4,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1013"
+  },
+  {
+    "category": "Home Loan",
+    "status": "Disbursed",
+    "loan_amount_inr": 4092000,
+    "days_since_created": 2,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1014"
+  },
+  {
+    "category": "Personal Loan",
+    "status": "Approved",
+    "loan_amount_inr": 2569000,
+    "days_since_created": 7,
+    "flagged_for_fraud_review": true,
+    "record_id": "CRED-1015"
+  },
+  {
+    "category": "Business Loan",
+    "status": "Disbursed",
+    "loan_amount_inr": 2202000,
+    "days_since_created": 23,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1016"
+  },
+  {
+    "category": "Personal Loan",
+    "status": "Under Review",
+    "loan_amount_inr": 1193000,
+    "days_since_created": 23,
+    "flagged_for_fraud_review": true,
+    "record_id": "CRED-1017"
+  },
+  {
+    "category": "Personal Loan",
+    "status": "Approved",
+    "loan_amount_inr": 222000,
+    "days_since_created": 18,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1018"
+  },
+  {
+    "category": "Personal Loan",
+    "status": "Under Review",
+    "loan_amount_inr": 312000,
+    "days_since_created": 25,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1019"
+  },
+  {
+    "category": "Auto Loan",
+    "status": "Under Review",
+    "loan_amount_inr": 4139000,
+    "days_since_created": 12,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1020"
+  },
+  {
+    "category": "Education Loan",
+    "status": "Rejected",
+    "loan_amount_inr": 695000,
+    "days_since_created": 17,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1021"
+  },
+  {
+    "category": "Personal Loan",
+    "status": "Under Review",
+    "loan_amount_inr": 1360000,
+    "days_since_created": 25,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1022"
+  },
+  {
+    "category": "Education Loan",
+    "status": "Under Review",
+    "loan_amount_inr": 4467000,
+    "days_since_created": 24,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1023"
+  },
+  {
+    "category": "Business Loan",
+    "status": "Submitted",
+    "loan_amount_inr": 3202000,
+    "days_since_created": 12,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1024"
+  },
+  {
+    "category": "Business Loan",
+    "status": "Under Review",
+    "loan_amount_inr": 108000,
+    "days_since_created": 2,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1025"
+  },
+  {
+    "category": "Auto Loan",
+    "status": "Approved",
+    "loan_amount_inr": 103000,
+    "days_since_created": 24,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1026"
+  },
+  {
+    "category": "Auto Loan",
+    "status": "Under Review",
+    "loan_amount_inr": 4468000,
+    "days_since_created": 30,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1027"
+  },
+  {
+    "category": "Personal Loan",
+    "status": "Disbursed",
+    "loan_amount_inr": 1080000,
+    "days_since_created": 4,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1028"
+  },
+  {
+    "category": "Business Loan",
+    "status": "Submitted",
+    "loan_amount_inr": 4956000,
+    "days_since_created": 10,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1029"
+  },
+  {
+    "category": "Business Loan",
+    "status": "Rejected",
+    "loan_amount_inr": 3015000,
+    "days_since_created": 7,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1030"
+  },
+  {
+    "category": "Business Loan",
+    "status": "Submitted",
+    "loan_amount_inr": 751000,
+    "days_since_created": 23,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1031"
+  },
+  {
+    "category": "Personal Loan",
+    "status": "Submitted",
+    "loan_amount_inr": 4448000,
+    "days_since_created": 24,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1032"
+  },
+  {
+    "category": "Auto Loan",
+    "status": "Approved",
+    "loan_amount_inr": 887000,
+    "days_since_created": 2,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1033"
+  },
+  {
+    "category": "Business Loan",
+    "status": "Submitted",
+    "loan_amount_inr": 425000,
+    "days_since_created": 21,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1034"
+  },
+  {
+    "category": "Auto Loan",
+    "status": "Submitted",
+    "loan_amount_inr": 2454000,
+    "days_since_created": 13,
+    "flagged_for_fraud_review": true,
+    "record_id": "CRED-1035"
+  },
+  {
+    "category": "Auto Loan",
+    "status": "Approved",
+    "loan_amount_inr": 634000,
+    "days_since_created": 19,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1036"
+  },
+  {
+    "category": "Personal Loan",
+    "status": "Submitted",
+    "loan_amount_inr": 3163000,
+    "days_since_created": 8,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1037"
+  },
+  {
+    "category": "Personal Loan",
+    "status": "Approved",
+    "loan_amount_inr": 4150000,
+    "days_since_created": 24,
+    "flagged_for_fraud_review": true,
+    "record_id": "CRED-1038"
+  },
+  {
+    "category": "Education Loan",
+    "status": "Disbursed",
+    "loan_amount_inr": 3748000,
+    "days_since_created": 3,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1039"
+  },
+  {
+    "category": "Auto Loan",
+    "status": "Submitted",
+    "loan_amount_inr": 1778000,
+    "days_since_created": 29,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1040"
+  },
+  {
+    "category": "Personal Loan",
+    "status": "Disbursed",
+    "loan_amount_inr": 762000,
+    "days_since_created": 18,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1041"
+  },
+  {
+    "category": "Home Loan",
+    "status": "Disbursed",
+    "loan_amount_inr": 267000,
+    "days_since_created": 17,
+    "flagged_for_fraud_review": true,
+    "record_id": "CRED-1042"
+  },
+  {
+    "category": "Business Loan",
+    "status": "Approved",
+    "loan_amount_inr": 703000,
+    "days_since_created": 27,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1043"
+  },
+  {
+    "category": "Home Loan",
+    "status": "Submitted",
+    "loan_amount_inr": 817000,
+    "days_since_created": 6,
+    "flagged_for_fraud_review": false,
+    "record_id": "CRED-1044"
+  }
+]
