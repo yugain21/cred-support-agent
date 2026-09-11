@@ -1,6 +1,6 @@
 # knowledge_base.py
 """
-Task 2: 12 required knowledge-base documents, 2-5 sentences each,
+12 required knowledge-base documents, 2-5 sentences each,
 covering every required topic in the scenario.
 """
 

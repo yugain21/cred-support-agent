@@ -96,10 +96,14 @@ def run_evaluation():
         except json.JSONDecodeError:
             j = {"accuracy": 0.0, "grounding": 0.0, "completeness": 0.0, "safety": 0.0}
 
+
+        scores = j.get('scores', {})
         for k in totals:
-            totals[k] += j.get(k, 0.0)
-        print(f"Query: {q!r:60} -> Acc: {j['accuracy']}, Grnd: {j['grounding']}, "
-              f"Comp: {j['completeness']}, Safe: {j['safety']}")
+            totals[k] += scores.get(k, 0.0)
+            
+        print(f"DEBUG - Raw JSON from agent: {j}")
+        print(f"Query: {q!r:60} -> Acc: {scores.get('accuracy', 'N/A')}, Grnd: {scores.get('grounding', 'N/A')}, "
+              f"Comp: {scores.get('completeness', 'N/A')}, Safe: {scores.get('safety', 'N/A')}")
 
     n = len(test_queries)
     print(f"\nAggregate Averages -> "

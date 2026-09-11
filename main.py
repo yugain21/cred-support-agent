@@ -10,7 +10,7 @@ import rag_core
 import cache
 import governance
 import guardrails
-from memory import ask_with_memory, transcript, reset_session
+from memory import ask_with_memory, reset_session
 from knowledge_base import DOCUMENTS
 import config
 
@@ -48,7 +48,6 @@ class AddDocumentRequest(BaseModel):
     doc_id: str
     text: str
 
-# FIX: Added session_id parameter so WebSocket connections stay persistent
 def _handle_query(query: str, session_id: str) -> dict:
     trace_id = str(uuid.uuid4())
     start = time.time()
@@ -59,42 +58,59 @@ def _handle_query(query: str, session_id: str) -> dict:
         _log_request(trace_id, query, time.time() - start, "rejected_budget")
         return {"status": "error", "trace_id": trace_id, "response": str(e)}
 
-    input_check = guardrails.validate_input_guardrails(query)
-    if not input_check["safe"]:
-        _log_request(trace_id, query, time.time() - start, "rejected_guardrail")
-        return {"status": "error", "trace_id": trace_id, "response": input_check["reason"]}
+    try:
+        input_check = guardrails.validate_input_guardrails(query)
+        if not input_check["safe"]:
+            _log_request(trace_id, query, time.time() - start, "rejected_guardrail")
+            return {"status": "error", "trace_id": trace_id, "response": input_check["reason"]}
 
-    def compute():
-        # FIX: Route the request through memory.py instead of calling the crew directly
-        return ask_with_memory(session_id, input_check["masked_query"])
+        def compute():
+            return ask_with_memory(session_id, input_check["masked_query"])
 
-    result, was_cache_hit = cache.get_or_compute(input_check["masked_query"], compute)
+        raw_result, was_cache_hit = cache.get_or_compute(input_check["masked_query"], compute)
 
-    is_rag_query = result.get("tool_used") == "rag_lookup"
-    rag_shaped_result = {"grounded": result.get("grounded", False)}
-    output_check = guardrails.validate_output_groundedness(rag_shaped_result, is_rag_query)
-    
-    if not output_check["safe"]:
-        _log_request(trace_id, query, time.time() - start, "rejected_ungrounded")
-        return {"status": "error", "trace_id": trace_id, "response": output_check["reason"]}
+        # SAFE NORMALIZATION: Ensure result is always a dictionary
+        if isinstance(raw_result, str):
+            try:
+                result = json.loads(raw_result)
+            except json.JSONDecodeError:
+                result = {"output": raw_result, "tool_used": "unknown", "grounded": True}
+        elif isinstance(raw_result, dict):
+            result = raw_result
+        else:
+            result = {"output": str(raw_result), "tool_used": "unknown", "grounded": True}
 
-    _log_request(trace_id, query, time.time() - start, "success")
-    return {
-        "status": "success",
-        "trace_id": trace_id,
-        "response": result,
-        "cache_hit": was_cache_hit,
-    }
+        is_rag_query = result.get("tool_used") == "rag_lookup"
+        rag_shaped_result = {"grounded": result.get("grounded", False)}
+        output_check = guardrails.validate_output_groundedness(rag_shaped_result, is_rag_query)
+        
+        if not output_check["safe"]:
+            _log_request(trace_id, query, time.time() - start, "rejected_ungrounded")
+            return {"status": "error", "trace_id": trace_id, "response": output_check["reason"]}
+
+        _log_request(trace_id, query, time.time() - start, "success")
+        return {
+            "status": "success",
+            "trace_id": trace_id,
+            "response": result,
+            "cache_hit": was_cache_hit,
+        }
+    except Exception as e:
+        _log_request(trace_id, query, time.time() - start, "internal_error")
+        return {
+            "status": "error",
+            "trace_id": trace_id,
+            "response": f"Internal pipeline execution error: {str(e)}"
+        }
 
 @app.post("/ask")
-async def ask_agent(request: QueryRequest):
-    # HTTP is stateless; issue a one-off session ID
+def ask_agent(request: QueryRequest):
     return _handle_query(request.query, session_id=str(uuid.uuid4()))
 
 @app.post("/add-document")
 async def add_document(request: AddDocumentRequest):
     DOCUMENTS[request.doc_id] = request.text
-    fixed_col, sent_col = rag_core.build_indices()
+    fixed_col, sent_col = rag_core.build_indices(force_rebuild=True)
     app.state.fixed_col = fixed_col
     app.state.sent_col = sent_col
     return {"status": "success", "doc_id": request.doc_id, "total_documents": len(DOCUMENTS)}
@@ -110,7 +126,6 @@ async def chat_websocket(websocket: WebSocket):
     try:
         while True:
             query = await websocket.receive_text()
-            # FIX: Pass the persistent session_id into the pipeline
             response = _handle_query(query, session_id)
             await websocket.send_json(response)
     except WebSocketDisconnect:

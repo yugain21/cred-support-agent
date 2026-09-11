@@ -1,8 +1,7 @@
 # cache.py
 """
-Task 16: in-memory cache keyed by normalized query text for the
-grounded-generation step. Tracks a call counter so a repeated identical
-query can be shown avoiding a redundant crew invocation.
+In-memory cache keyed by normalized query text, so a repeated
+identical query skips a redundant crew invocation.
 """
 import re
 

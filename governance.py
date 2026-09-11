@@ -1,11 +1,10 @@
 # governance.py
 """
-Task 15, Runtime layer: a per-request token/cost budget cap that rejects
-an oversized request rather than silently exceeding budget.
+Per-request token/cost budget cap. Rejects oversized requests instead
+of silently exceeding budget.
 
-Under MOCK_LLM there's no real token metering, so we approximate cost
-with a simple, documented proxy: ~4 characters per token (a standard
-rough heuristic), multiplied by a flat per-token cost, capped per request.
+No real tokenizer under MOCK_LLM, so cost is estimated at ~4 chars/token
+(standard rough heuristic) times a flat per-token rate.
 """
 
 CHARS_PER_TOKEN_ESTIMATE = 4

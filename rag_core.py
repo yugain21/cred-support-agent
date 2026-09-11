@@ -1,15 +1,11 @@
 # rag_core.py
 """
-Tasks 3-5: dual chunking strategies, dual ChromaDB collections,
-empirically-calibrated retrieval threshold, and grounded generation.
+Builds two Chroma collections (fixed-size and sentence-based chunking)
+over the knowledge base and answers queries against them.
 
-IMPORTANT FIX vs the original repo: chroma_client.get_or_create_collection()
-defaults to L2 (squared Euclidean) distance, not cosine distance. The
-original code converted that L2 distance with `1 - d/2` as if it were a
-cosine distance, which silently produced meaningless "similarity" numbers
-and made threshold calibration impossible to reproduce (that's why the
-old repo's own transcripts contradicted its own README). We fix this by
-explicitly requesting cosine space per collection.
+Uses cosine similarity space explicitly, since Chroma's default is L2
+(squared Euclidean) distance, which isn't directly comparable to a
+0-1 similarity threshold.
 """
 import chromadb
 from sentence_transformers import SentenceTransformer
@@ -20,8 +16,19 @@ chroma_client = chromadb.Client()
 
 COSINE_SPACE = {"hnsw:space": "cosine"}
 
+_INDEX_CACHE = {"fixed_col": None, "sent_col": None}
 
-def build_indices():
+
+def build_indices(force_rebuild: bool = False):
+    """
+    Builds (or rebuilds) the two Chroma collections from DOCUMENTS.
+    Memoized: repeated calls reuse the same collections instead of
+    re-embedding every document each time. Pass force_rebuild=True
+    after DOCUMENTS changes (see main.py's /add-document endpoint).
+    """
+    if not force_rebuild and _INDEX_CACHE["fixed_col"] is not None:
+        return _INDEX_CACHE["fixed_col"], _INDEX_CACHE["sent_col"]
+
     fixed_col = chroma_client.get_or_create_collection("fixed_chunks", metadata=COSINE_SPACE)
     sent_col = chroma_client.get_or_create_collection("sentence_chunks", metadata=COSINE_SPACE)
 
@@ -59,14 +66,16 @@ def build_indices():
         embeddings=embedder.encode(sent_chunks).tolist(),
         metadatas=[{"parent_doc": p} for p in sent_parents],
     )
+
+    _INDEX_CACHE["fixed_col"] = fixed_col
+    _INDEX_CACHE["sent_col"] = sent_col
     return fixed_col, sent_col
 
 
 def _query_with_similarities(collection, query: str, n_results: int = 3):
-    """Returns a list of {doc, parent, similarity} for EACH retrieved
-    chunk individually (not just the top-1), so callers can filter each
-    chunk by its own score instead of gating the whole batch on the best
-    match alone."""
+    """Returns per-chunk {doc, parent, similarity} for the top n_results,
+    so each chunk can be filtered on its own score rather than gating
+    the whole batch on the top match alone."""
     query_emb = embedder.encode([query]).tolist()
     results = collection.query(query_embeddings=query_emb, n_results=n_results)
     if not results["documents"][0]:
@@ -94,11 +103,8 @@ def _similarity(collection, query: str, n_results: int = 3):
 
 
 def calibrate_threshold(collection, in_scope_queries: list, out_scope_queries: list):
-    """
-    Task 4: empirically measure top-1 similarity for real in-scope and
-    out-of-scope queries, then pick a threshold between the two observed
-    clusters instead of trusting an untested preset.
-    """
+    """Measures top-1 similarity for known in-scope and out-of-scope
+    queries and picks a threshold between the two clusters."""
     in_scores = [_similarity(collection, q)[0] for q in in_scope_queries]
     out_scores = [_similarity(collection, q)[0] for q in out_scope_queries]
 
@@ -124,13 +130,8 @@ def calibrate_threshold(collection, in_scope_queries: list, out_scope_queries: l
 
 
 def grounded_generation(query: str, collection, threshold: float, n_results: int = 2):
-    """
-    Task 4: retrieve top-k chunks and generate an answer using ONLY that
-    retrieved context. Under MOCK_LLM there's no real generator, so this
-    produces an extractive, synthesized answer built strictly from the
-    retrieved chunk text - never inventing facts outside the context -
-    and falls back to "I don't know" when similarity is below threshold.
-    """
+    """Retrieves the top chunks and composes an answer strictly from
+    that context. Falls back to "I don't know" below threshold."""
     rows = _query_with_similarities(collection, query, n_results=n_results)
     top_similarity = rows[0]["similarity"] if rows else 0.0
 
@@ -158,11 +159,8 @@ def grounded_generation(query: str, collection, threshold: float, n_results: int
 
 
 def document_level_precision_recall(collection, queries: list, relevant_doc_map: dict, threshold: float):
-    """
-    Task 5: precision/recall at the DOCUMENT level (chunks mapped back to
-    parent doc and deduped) for one collection, with per-query arithmetic
-    returned so it can be printed.
-    """
+    """Precision/recall at the parent-document level (chunks deduped
+    back to their source doc) for one collection."""
     output_rows = []
     total_tp = total_fp = total_fn = 0
 

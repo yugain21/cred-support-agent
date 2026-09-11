@@ -1,6 +1,6 @@
 # dataset.py
 """
-Task 1: Deterministic, seeded loan-application dataset generator.
+Deterministic, seeded loan-application dataset generator.
 
 Design choices (also stated in README.md):
 - Seed: 42

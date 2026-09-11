@@ -1,0 +1,33 @@
+{"trace_id": "4b625112-ebcc-4cf9-a8d1-3a1a55722645", "duration_seconds": 2.2397, "query_masked": "What are the late fees for delayed credit card bill payments?", "status": "internal_error", "timestamp": 1788816031.7047706}
+{"trace_id": "a5ece78c-029c-4367-9ac8-5058c2886bfa", "duration_seconds": 0.0532, "query_masked": "Can you check the status of loan application CRED-1001?", "status": "internal_error", "timestamp": 1788816055.1348054}
+{"trace_id": "21902138-8c37-4152-aa5c-e30dd6ef3189", "duration_seconds": 0.0218, "query_masked": "How do I bake a chocolate cake?", "status": "internal_error", "timestamp": 1788816076.0372062}
+{"trace_id": "fc12f84d-2bb5-423c-92ab-d4807605f328", "duration_seconds": 0.0472, "query_masked": "My PAN is [PAN_REDACTED], what is the interest rate on savings?", "status": "internal_error", "timestamp": 1788816100.822361}
+{"trace_id": "0367f423-44af-4bac-a391-9fdd50818d76", "duration_seconds": 0.0256, "query_masked": "What are the late fees for delayed credit card bill payments?", "status": "internal_error", "timestamp": 1788816132.7934923}
+{"trace_id": "51c820ad-7599-48ac-9272-bb2fe54495b9", "duration_seconds": 2.4722, "query_masked": "What are the late fees for delayed credit card bill payments?", "status": "internal_error", "timestamp": 1788816363.269991}
+{"trace_id": "bf653555-3c0a-4215-addc-c69c5b24c6ca", "duration_seconds": 2.42, "query_masked": "What are the late fees for delayed credit card bill payments?", "status": "success", "timestamp": 1788816513.3526723}
+{"trace_id": "8aad6d27-b141-426a-a124-6eed85509b35", "duration_seconds": 0.0742, "query_masked": "CRED-1001", "status": "success", "timestamp": 1788816582.5799575}
+{"trace_id": "c0954c34-627d-4c5d-9ed6-a9d8cd2d8a63", "duration_seconds": 0.0, "query_masked": "CRED-1001", "status": "success", "timestamp": 1788816594.669103}
+{"trace_id": "d9c75e4e-e12c-4010-b612-53ab5e7aaddd", "duration_seconds": 0.0368, "query_masked": "What is the late fee policy?", "status": "success", "timestamp": 1788816637.3917823}
+{"trace_id": "76793694-6201-48f6-ae3e-4dee4c936235", "duration_seconds": 0.0626, "query_masked": "late fees", "status": "success", "timestamp": 1788816653.5027509}
+{"trace_id": "0b6c5fd4-21bb-4f44-8208-3b29822d21ae", "duration_seconds": 0.0, "query_masked": "CRED-1001", "status": "success", "timestamp": 1788816810.86542}
+{"trace_id": "46cd6bfa-ab9c-42f6-85e0-369657f832c3", "duration_seconds": 0.1318, "query_masked": "Check status for CRED-1001", "status": "success", "timestamp": 1788816930.0281425}
+{"trace_id": "4d254f7c-96fb-4521-a94e-4144b6a28c70", "duration_seconds": 0.0822, "query_masked": "Can you check the status of CRED-1001", "status": "success", "timestamp": 1788816979.5128932}
+{"trace_id": "22cf2573-e62c-4e84-bea1-d0428a419beb", "duration_seconds": 0.0634, "query_masked": "What is the status of application CRED-1001?", "status": "success", "timestamp": 1788817009.0681517}
+{"trace_id": "6deba290-9ae3-4f7b-84fb-0b9187dc46a5", "duration_seconds": 0.0, "query_masked": "Check status for CRED-1001", "status": "success", "timestamp": 1788817165.4300985}
+{"trace_id": "b687c51b-3bc7-4b3e-a810-a454d48d94b4", "duration_seconds": 2.3529, "query_masked": "Check status for CRED-1002", "status": "internal_error", "timestamp": 1788817254.3647754}
+{"trace_id": "ff042f5c-a50c-44fc-9e35-76f01209981a", "duration_seconds": 0.0045, "query_masked": "Check status for CRED-1001", "status": "internal_error", "timestamp": 1788817273.0889726}
+{"trace_id": "45ece415-fab9-4690-959c-92240d022254", "duration_seconds": 2.1592, "query_masked": "Check status for CRED-1001", "status": "success", "timestamp": 1788817384.244636}
+{"trace_id": "f301b40a-e4b9-48c6-9e24-4453aae9dea1", "duration_seconds": 2.4793, "query_masked": "Check status for CRED-1001", "status": "internal_error", "timestamp": 1788817565.9714322}
+{"trace_id": "e576a04e-b2c1-4118-b3ea-fef9fec3c793", "duration_seconds": 0.0015, "query_masked": "What are the late fees?", "status": "internal_error", "timestamp": 1788817583.026822}
+{"trace_id": "b91418df-2e73-4365-8fe6-2fb4319c653a", "duration_seconds": 2.6509, "query_masked": "Check status for CRED-1001", "status": "internal_error", "timestamp": 1788817755.1845486}
+{"trace_id": "b532f44e-9186-4377-b20b-c2662088036d", "duration_seconds": 2.4515, "query_masked": "Check status for CRED-1001", "status": "success", "timestamp": 1788817897.7940493}
+{"trace_id": "ecf7f91f-ff67-426d-addb-21724e69d20e", "duration_seconds": 0.0703, "query_masked": "What are the rules regarding late fees and billing cycles?", "status": "success", "timestamp": 1788817958.7867522}
+{"trace_id": "0d3716a2-5ff6-4eb7-8d92-0a816f3680d4", "duration_seconds": 0.0671, "query_masked": "Evaluate the accuracy of the system response.", "status": "success", "timestamp": 1788817976.106864}
+{"trace_id": "2890b60e-2bb9-4edf-b088-f5f542d82e92", "duration_seconds": 0.0557, "query_masked": "Can you give me a recipe for a chocolate cake?", "status": "success", "timestamp": 1788817997.5639658}
+{"trace_id": "29645abc-855a-4b3c-b8d4-317afb6d9f8f", "duration_seconds": 2.3734, "query_masked": "Evaluate the accuracy of the system response.", "status": "internal_error", "timestamp": 1788818198.1590116}
+{"trace_id": "f387521f-3106-4707-a45c-bf5fca70f1be", "duration_seconds": 0.0928, "query_masked": "Can you give me a recipe for a chocolate cake?", "status": "success", "timestamp": 1788818214.4503603}
+{"trace_id": "cbf20601-04a7-4a97-a63b-4e50c154f55c", "duration_seconds": 2.3119, "query_masked": "Evaluate the accuracy of the system response.", "status": "internal_error", "timestamp": 1788818387.955723}
+{"trace_id": "ec755600-c7da-4fb5-abf5-b880c176ca5c", "duration_seconds": 2.6497, "query_masked": "Evaluate the accuracy of the system response.", "status": "success", "timestamp": 1788818493.4960325}
+{"trace_id": "8d1475f6-c022-4281-865b-ef1e695180f2", "duration_seconds": 8.2743, "query_masked": "What are the rules for a home loan?", "status": "success", "timestamp": 1788871757.9366748}
+{"trace_id": "945015d1-8c7f-4b08-8b85-d6b3a158e6ce", "duration_seconds": 0.2071, "query_masked": "What is the minimum income needed for a personal loan?", "status": "success", "timestamp": 1788871813.8305533}
+{"trace_id": "1fb05d82-7979-4fe2-a746-2ab5380b958d", "duration_seconds": 0.1933, "query_masked": "Check status for record_id CRED-1001", "status": "success", "timestamp": 1788871827.7610822}

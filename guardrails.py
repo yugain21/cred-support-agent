@@ -1,15 +1,10 @@
 # guardrails.py
 """
-Task 10: input-side guardrails (PII masking + prompt-injection detection)
-and an output-side groundedness check.
+Input guardrails: PII masking + prompt-injection detection.
+Output guardrail: groundedness check on RAG responses.
 
-Per the brief, only the FIXED-FORMAT PII fields are masked:
-  - PAN:      5 letters + 4 digits + 1 letter, e.g. ABCDE1234F
-  - Aadhaar:  12 digits, often grouped 4-4-4, e.g. 1234 5678 9012
-  - Bank account number: a long, unstructured digit run (9-18 digits) that
-    isn't already an Aadhaar match.
-Applicant name and income figures are explicitly OUT OF SCOPE for masking
-(free text / unformatted numbers, no reliable pattern under a keyless masker).
+Only fixed-format PII is masked (PAN, Aadhaar, account numbers) —
+names and income figures are free text with no reliable pattern.
 """
 import re
 
@@ -36,12 +31,8 @@ OUT_OF_SCOPE_TOPICS = ["cake", "recipe", "weather", "sports", "football", "movie
 
 def mask_pii(text: str) -> str:
     """
-    Mask PAN, Aadhaar, and bank-account-number-shaped substrings.
-    NOTE: a bare 12-digit run is ambiguous between Aadhaar and a 12-digit
-    bank account number by pattern alone; the Aadhaar pattern matches
-    first, so such values are redacted as [AADHAAR_REDACTED]. Either way
-    the raw digits never reach the model or the logs, which is the
-    guardrail's actual requirement - the label is a secondary concern.
+    Masks PAN, Aadhaar, and account-number-shaped substrings.
+    A bare 12-digit run matches Aadhaar before account number.
     """
     masked = PAN_PATTERN.sub("[PAN_REDACTED]", text)
     masked = AADHAAR_PATTERN.sub("[AADHAAR_REDACTED]", masked)
@@ -55,13 +46,10 @@ def detect_prompt_injection(text: str) -> bool:
 
 def validate_input_guardrails(query: str) -> dict:
     """
-    Returns {"safe": bool, "reason": str, "masked_query": str}.
-    Two independent checks:
-      1. Prompt-injection detection (blocks the request).
-      2. PII masking (does NOT block the request - masks it and lets it
-         proceed, same as a real support agent redacting sensitive fields
-         before they hit the model/logs).
+    Runs prompt-injection detection (blocks on match) and PII
+    masking (redacts but lets the request through).
     """
+
     if detect_prompt_injection(query):
         return {
             "safe": False,
@@ -75,11 +63,8 @@ def validate_input_guardrails(query: str) -> dict:
 
 def validate_output_groundedness(rag_result: dict, is_rag_query: bool) -> dict:
     """
-    Task 10 output-side guardrail: refuse to answer when the retrieved
-    context doesn't support the question. `rag_result` is the dict returned
-    by rag_core.grounded_generation (has a `grounded` bool). Lookup-tool
-    queries (not RAG queries) are exempt - they're grounded in the
-    database record itself, not retrieved text.
+    Blocks RAG answers below the similarity threshold. Lookup-tool
+    queries are grounded in the DB record itself, so they're exempt.
     """
     if not is_rag_query:
         return {"safe": True, "reason": "Not a RAG query; groundedness check not applicable."}
@@ -94,5 +79,4 @@ def validate_output_groundedness(rag_result: dict, is_rag_query: bool) -> dict:
 
 
 def scrub_for_log(text: str) -> str:
-    """Same masking applied to anything written to disk (Task 12)."""
     return mask_pii(text)

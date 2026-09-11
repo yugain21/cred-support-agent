@@ -1,8 +1,7 @@
 # schemas.py
 """
-Task 9: structured output schema every crew response must conform to.
-Every call site validates the composer's output against this model
-before returning it to the caller (see agents.py: process_query_with_crew).
+Structured output schema every crew response must conform to.
+Validated in agents.py before a response leaves the crew.
 """
 from typing import List, Optional
 from pydantic import BaseModel, Field, ValidationError
